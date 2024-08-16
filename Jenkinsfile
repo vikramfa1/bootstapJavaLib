@@ -84,16 +84,17 @@ pipeline {
                         }
                     }
                 }
+        stage('publish completion status to rule engine') {
+
+                     steps {
+
+                        sh """curl -X PUT -d '{"operationType":"JAVA_LIB","taskId":"JENKINS_PIPELINE","jobId":"1","jobName":"payment-util-lib","taskStatus":"COMPLETED"}' -H "Content-Type:application/json" http://host.docker.internal:8084/v1/job/1/update"""
+
+                     }
+                  }
     }
 
-    stage('publish completion status to rule engine') {
 
-                 steps {
-
-                    sh """curl -X PUT -d '{"operationType":"JAVA_LIB","taskId":"JENKINS_PIPELINE","jobId":"3","jobName":"payment-util-lib","taskStatus":"COMPLETED"}' -H "Content-Type:application/json" http://host.docker.internal:8084/v1/job/1/update"""
-
-                 }
-              }
 
     post {
         success {
